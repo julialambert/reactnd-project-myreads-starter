@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import Header from "./Header";
-import Shelf from "./Shelf";
+import React, { Component } from 'react'
+import Header from "./Header"
+import Shelf from "./Shelf"
 
 class MyReadsPage extends Component {
   goToSearchPage = () => this.props.history.push('/search')
 
   render() {
-    const { books } = this.props
+    const { books, onHandleUpdate, onGetBookShelf } = this.props
     const currentlyReading = books.filter(b => b.shelf === 'currentlyReading')
     const wantToRead = books.filter(b => b.shelf === 'wantToRead')
     const read = books.filter(b => b.shelf === 'read')
@@ -16,9 +16,15 @@ class MyReadsPage extends Component {
 
         <div className="list-books-content">
           <div>
-            <Shelf title='Currently Reading' books={currentlyReading} />
-            <Shelf title='Want to read' books={wantToRead} />
-            <Shelf title='Read' books={read} />
+            <Shelf title='Currently Reading' books={currentlyReading}
+              onHandleUpdate={onHandleUpdate}
+              onGetBookShelf={onGetBookShelf} />
+            <Shelf title='Want to read' books={wantToRead}
+              onHandleUpdate={onHandleUpdate}
+              onGetBookShelf={onGetBookShelf} />
+            <Shelf title='Read' books={read}
+              onHandleUpdate={onHandleUpdate}
+              onGetBookShelf={onGetBookShelf} />
           </div>
         </div>
 
@@ -26,7 +32,7 @@ class MyReadsPage extends Component {
           <button onClick={this.goToSearchPage}>Add a book</button>
         </div>
       </div>
-    );
+    )
   }
 }
 

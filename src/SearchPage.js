@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import BookList from "./BookList";
-import SearchBar from "./SearchBar";
+import React, { Component } from "react"
+import BookList from "./BookList"
+import SearchBar from "./SearchBar"
 import *  as BooksAPI from './BooksAPI'
 
 class SearchPage extends Component {
@@ -20,9 +20,10 @@ class SearchPage extends Component {
     } else {
       this.setState({ searchBooks: [], noResults: true })
     }
-  };
+  }
 
   render() {
+    const { onHandleUpdate, onGetBookShelf } = this.props
     return (
       <div className="search-books">
         <SearchBar onHandleSearch={this.onSearch} />
@@ -30,11 +31,13 @@ class SearchPage extends Component {
           {
             this.state.noResults || this.state.searchBooks.length === 0
               ? <p>No Results.</p>
-              : <BookList books={this.state.searchBooks} />
+              : <BookList books={this.state.searchBooks}
+                onHandleUpdate={onHandleUpdate}
+                onGetBookShelf={onGetBookShelf} />
           }
         </div>
       </div>
-    );
+    )
   }
 }
 

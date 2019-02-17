@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 import { Link } from 'react-router-dom'
-import * as _ from 'lodash';
+import * as _ from 'lodash'
 
 class SearchBar extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       searchText: ''
-    };
+    }
 
-    this.callOnHandleSearch = _.debounce(this.callOnHandleSearch, 500);
+    this.callOnHandleSearch = _.debounce(this.callOnHandleSearch, 500)
   }
 
   callOnHandleSearch = () =>

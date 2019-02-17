@@ -1,9 +1,9 @@
 import React from 'react'
 import *  as BooksAPI from './BooksAPI'
 import './App.css'
-import { Route } from 'react-router-dom';
-import SearchPage from './SearchPage';
-import MyReadsPage from './MyReadsPage';
+import { Route } from 'react-router-dom'
+import SearchPage from './SearchPage'
+import MyReadsPage from './MyReadsPage'
 
 class BooksApp extends React.Component {
   state = {
@@ -16,24 +16,32 @@ class BooksApp extends React.Component {
         console.log(books)
         this.setState({ books })
       })
-      .catch(err =>
+      .catch(() =>
         alert('There was an error loading my reads. Try again later.'))
   }
 
-  onUpdate = (book, shelf) => {
+  handleUpdate = (book, shelf) => {
     BooksAPI.update(book, shelf)
-    .then(resp => {
-      this.addBook({
-        ...book,
-        shelf
+      .then(() => {
+        this.addBook({
+          ...book,
+          shelf
+        })
       })
-    })
-    .catch(err =>
-      alert('There was an error updating my reads. Try again later.'))
+      .catch(() =>
+        alert('There was an error updating my reads. Try again later.'))
   }
 
   addBook = (book) => {
-    //TODO: addBook function
+    const newBooks = this.state.books.filter(b => b.id !== book.id)
+    this.setState(book.shelf !== 'none'
+      ? { books: [...newBooks, book] }
+      : { books: newBooks })
+  }
+
+  getBookShelf = (book) => {
+    const foundBook = this.state.books.find(b => b.id === book.id)
+    return foundBook ? foundBook.shelf : 'none'
   }
 
   componentDidMount() {
@@ -43,11 +51,15 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route exact path='/search' render={() => <SearchPage />} />
+        <Route exact path='/search' render={() =>
+          <SearchPage onHandleUpdate={this.handleUpdate}
+            onGetBookShelf={this.getBookShelf} />} />
         <Route
           exact path='/'
           render={(props) =>
-            <MyReadsPage {...props} books={this.state.books} />} />
+            <MyReadsPage {...props} books={this.state.books}
+              onHandleUpdate={this.handleUpdate}
+              onGetBookShelf={this.getBookShelf} />} />
       </div>
     )
   }
